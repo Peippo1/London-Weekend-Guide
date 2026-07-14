@@ -1,0 +1,78 @@
+---
+import type { WeekendGuide, WeekendEvent } from "../data/schema";
+import EventCard from "./EventCard.astro";
+
+interface Props {
+  weekend: WeekendGuide;
+}
+
+const { weekend } = Astro.props;
+
+const eventsById = new Map<string, WeekendEvent>(weekend.events.map((event) => [event.id, event]));
+const featuredEvents = weekend.featuredPickIds
+  .map((id) => eventsById.get(id))
+  .filter((event): event is WeekendEvent => Boolean(event));
+---
+
+<main class="page-shell">
+  <section class="hero">
+    <p class="hero__kicker">London weekend guide</p>
+    <div class="hero__heading">
+      <p class="hero__date">{weekend.dateRange}</p>
+      <h1>{weekend.title}</h1>
+      <p class="hero__intro">{weekend.intro}</p>
+    </div>
+    <div class="hero__actions">
+      <a class="hero__cta" href="#top-picks">{weekend.ctaText}</a>
+      <p class="hero__note">Manually curated, neighbourhood-aware, and meant to be used quickly.</p>
+    </div>
+  </section>
+
+  <section id="top-picks" class="panel panel--feature">
+    <div class="section-heading">
+      <p class="section-heading__eyebrow">Shortlist</p>
+      <h2>{weekend.topThreeTitle ?? "If you only do three things"}</h2>
+    </div>
+    <div class="grid grid--feature">
+      {featuredEvents.map((event) => <EventCard event={event} />)}
+    </div>
+  </section>
+
+  {(weekend.neighbourhoodNote || weekend.weatherTip) && (
+    <section class="insights">
+      {weekend.neighbourhoodNote && (
+        <article class="insight-card">
+          <p class="section-heading__eyebrow">Neighbourhood note</p>
+          <p>{weekend.neighbourhoodNote}</p>
+        </article>
+      )}
+      {weekend.weatherTip && (
+        <article class="insight-card">
+          <p class="section-heading__eyebrow">Weather-aware tip</p>
+          <p>{weekend.weatherTip}</p>
+        </article>
+      )}
+    </section>
+  )}
+
+  {weekend.sections.map((section) => (
+    <section class="panel" id={section.id}>
+      <div class="section-heading">
+        <p class="section-heading__eyebrow">Curated section</p>
+        <h2>{section.title}</h2>
+        {section.description && <p>{section.description}</p>}
+      </div>
+      <div class="grid">
+        {section.eventIds.map((eventId) => {
+          const event = eventsById.get(eventId);
+
+          if (!event) {
+            return null;
+          }
+
+          return <EventCard event={event} />;
+        })}
+      </div>
+    </section>
+  ))}
+</main>

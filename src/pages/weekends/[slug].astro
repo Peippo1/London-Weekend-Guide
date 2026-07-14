@@ -1,0 +1,22 @@
+---
+import WeekendPage from "../../components/WeekendPage.astro";
+import { getAllWeekends, getWeekendBySlug } from "../../data/weekends";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return getAllWeekends().map((weekend) => ({
+    params: { slug: weekend.slug }
+  }));
+}
+
+const { slug } = Astro.params;
+const weekend = slug ? getWeekendBySlug(slug) : undefined;
+
+if (!weekend) {
+  throw new Error(`Weekend "${slug}" was not found.`);
+}
+---
+
+<BaseLayout title={`${weekend.title} | London Weekend Guide`} description={weekend.intro}>
+  <WeekendPage weekend={weekend} />
+</BaseLayout>
