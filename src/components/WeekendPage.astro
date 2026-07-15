@@ -1,6 +1,7 @@
 ---
 import type { WeekendGuide, WeekendEvent } from "../data/schema";
 import EventCard from "./EventCard.astro";
+import NewsletterSignup from "./NewsletterSignup.astro";
 
 interface Props {
   weekend: WeekendGuide;
@@ -54,6 +55,8 @@ const featuredEvents = weekend.featuredPickIds
       )}
     </section>
   )}
+
+  <NewsletterSignup weekendSlug={weekend.slug} />
 
   {weekend.sections.map((section) => (
     <section class="panel" id={section.id}>

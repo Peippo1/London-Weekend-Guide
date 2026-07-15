@@ -13,8 +13,14 @@ An Astro-based static site for a manually curated London weekend guide. The home
 
 - `src/data/weekends/`: one file per weekend issue
 - `src/data/schema.ts`: central content schema and reference validation
+- `src/newsletter/contracts.ts`: shared newsletter request/response contracts and provider interfaces
+- `src/newsletter/render.ts`: weekly email rendering from the same weekend content model
+- `src/newsletter/server.ts`: Postgres subscriber store and Resend transport
+- `api/`: signup, unsubscribe, health, and protected weekly-send functions
+- `sql/schema.sql`: Postgres subscriber table migration
 - `src/pages/index.astro`: current weekend route
 - `src/pages/weekends/[slug].astro`: archive-capable static route
+- `docs/email-and-domain-options.md`: backend shape and custom domain options for the current Sites project
 - `tests/`: content validation and static build checks
 
 ## Local Commands
@@ -42,6 +48,13 @@ pnpm build
 - Optional fields such as `url`, `price`, `tags`, `editorialHighlight`, `neighbourhoodNote`, and `weatherTip` may be omitted.
 - Weather and travel guidance are editorial copy in v1, not computed data.
 
+## Newsletter
+
+- The site includes a weekly email signup section on the public page.
+- The included Vercel-compatible backend stores subscribers in Postgres and sends through Resend.
+- Run `sql/schema.sql`, then configure the variables in `.env.example` before deploying.
+- The endpoint and provider details are documented in [docs/email-and-domain-options.md](/Users/tim/Documents/Codex/2026-07-14/new/docs/email-and-domain-options.md).
+
 ## Deployment
 
-Build the site as static output and publish the generated `dist/` directory as a separate site deployment.
+The editorial pages remain static, but the repository also includes Vercel functions under `api/`. Deploy the repository as a Vercel project for the complete signup and weekly email loop; a static-only Sites deployment will publish the guide pages but cannot execute the backend functions.

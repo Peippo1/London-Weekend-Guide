@@ -239,6 +239,62 @@ a {
   padding: 1.25rem;
 }
 
+.newsletter {
+  display: grid;
+  gap: 1rem;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 239, 0.96), rgba(220, 236, 223, 0.72)),
+    rgba(255, 248, 239, 0.88);
+}
+
+.newsletter-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.newsletter-form__field,
+.newsletter-form__field--hint {
+  display: grid;
+  gap: 0.45rem;
+  font-family: "Trebuchet MS", sans-serif;
+  color: var(--muted);
+}
+
+.newsletter-form__field span,
+.newsletter-form__field--hint span {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.newsletter-form input {
+  min-height: 3.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--ink);
+  font: inherit;
+}
+
+.newsletter-form input::placeholder {
+  color: #7f8a95;
+}
+
+.newsletter-form__status {
+  margin: 0;
+  font-family: "Trebuchet MS", sans-serif;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.newsletter-form__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 @media (min-width: 760px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
