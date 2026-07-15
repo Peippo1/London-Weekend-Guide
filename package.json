@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@vercel/postgres": "^0.10.0",
-    "astro": "^5.12.1",
+    "astro": "^6.4.6",
     "resend": "^4.8.0",
     "zod": "^4.0.5"
   },
