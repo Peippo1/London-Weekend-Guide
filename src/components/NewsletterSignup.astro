@@ -1,0 +1,121 @@
+---
+interface Props {
+  weekendSlug: string;
+}
+
+const { weekendSlug } = Astro.props;
+const subscribeEndpoint = import.meta.env.PUBLIC_NEWSLETTER_SUBSCRIBE_ENDPOINT ?? "";
+const signupEnabled = subscribeEndpoint.length > 0;
+---
+
+<section class="newsletter panel" id="newsletter">
+  <div class="section-heading">
+    <p class="section-heading__eyebrow">Weekly email</p>
+    <h2>Get the shortlist every week</h2>
+    <p>
+      One email per week with the current edition’s best picks. No scraping, no daily spam, no
+      bloated digest.
+    </p>
+  </div>
+
+  <form
+    class="newsletter-form"
+    data-newsletter-form
+    data-endpoint={subscribeEndpoint}
+    data-weekend-slug={weekendSlug}
+    novalidate
+  >
+    <label class="newsletter-form__field">
+      <span>Email address</span>
+      <input
+        type="email"
+        name="email"
+        autocomplete="email"
+        placeholder="you@example.com"
+        required
+      />
+    </label>
+
+    <label class="newsletter-form__field newsletter-form__field--hint">
+      <span>Optional postcode hint</span>
+      <input type="text" name="postalCodeHint" autocomplete="postal-code" placeholder="E8" />
+    </label>
+
+    <label class="newsletter-form__trap" aria-hidden="true">
+      <span>Leave this field empty</span>
+      <input type="text" name="honeypot" tabindex="-1" autocomplete="off" />
+    </label>
+
+    <button type="submit" class="hero__cta" disabled={!signupEnabled}>
+      {signupEnabled ? "Join the weekly email" : "Signup backend not connected yet"}
+    </button>
+
+    <p class="newsletter-form__status" data-newsletter-status>
+      {signupEnabled
+        ? "Signup posts JSON to the configured newsletter backend."
+        : "Set PUBLIC_NEWSLETTER_SUBSCRIBE_ENDPOINT to enable signup on the live site."}
+    </p>
+  </form>
+</section>
+
+<script is:inline>
+  const forms = document.querySelectorAll("[data-newsletter-form]");
+
+  for (const form of forms) {
+    const statusNode = form.querySelector("[data-newsletter-status]");
+    const button = form.querySelector('button[type="submit"]');
+    const endpoint = form.getAttribute("data-endpoint") ?? "";
+    const weekendSlug = form.getAttribute("data-weekend-slug") ?? "";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!endpoint || !statusNode || !button) {
+        return;
+      }
+
+      const formData = new FormData(form);
+      const payload = {
+        email: String(formData.get("email") ?? ""),
+        postalCodeHint: String(formData.get("postalCodeHint") ?? "").trim() || undefined,
+        honeypot: String(formData.get("honeypot") ?? ""),
+        source: "site",
+        weekendSlug
+      };
+
+      button.setAttribute("disabled", "true");
+      statusNode.textContent = "Submitting...";
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(
+            typeof result?.message === "string" ? result.message : "Signup request failed."
+          );
+        }
+
+        statusNode.textContent =
+          result?.status === "already_subscribed"
+            ? "You are already on the list."
+            : result?.status === "pending_confirmation"
+              ? "Check your inbox to confirm your signup."
+              : "You are in. The next weekly issue will land by email.";
+        form.reset();
+      } catch (error) {
+        statusNode.textContent =
+          error instanceof Error ? error.message : "Could not save your signup right now.";
+      } finally {
+        button.removeAttribute("disabled");
+      }
+    });
+  }
+</script>
