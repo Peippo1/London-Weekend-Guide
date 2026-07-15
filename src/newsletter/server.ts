@@ -9,7 +9,7 @@ import {
   type WeeklyDigestTransport,
   type WeeklyDigestTransportInput,
   type WeeklyDigestTransportResult
-} from "./contracts";
+} from "./contracts.js";
 
 type SubscriberRow = {
   id: string;

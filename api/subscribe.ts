@@ -1,7 +1,7 @@
-import { subscribeRequestSchema, subscribeResponseSchema } from "../src/newsletter/contracts";
-import { PostgresSubscriberStore } from "../src/newsletter/server";
-import type { ApiRequest, ApiResponse } from "./types";
-import { sendJson } from "./types";
+import { subscribeRequestSchema, subscribeResponseSchema } from "../src/newsletter/contracts.js";
+import { PostgresSubscriberStore } from "../src/newsletter/server.js";
+import type { ApiRequest, ApiResponse } from "./types.js";
+import { sendJson } from "./types.js";
 
 export default async function handler(request: ApiRequest, response: ApiResponse) {
   if (request.method !== "POST") {

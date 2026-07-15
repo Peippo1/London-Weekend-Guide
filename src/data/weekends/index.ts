@@ -1,5 +1,5 @@
-import type { WeekendGuide } from "../schema";
-import july182026 from "./2026-07-18";
+import type { WeekendGuide } from "../schema.js";
+import july182026 from "./2026-07-18.js";
 
 const weekends = [july182026] satisfies WeekendGuide[];
 const currentWeekendSlug = "2026-07-18";

@@ -1,7 +1,7 @@
-import { getCurrentWeekend } from "../../src/data/weekends";
-import { buildWeeklyDigestContent } from "../../src/newsletter/render";
-import { PostgresSubscriberStore, ResendWeeklyDigestTransport, requiredEnv } from "../../src/newsletter/server";
-import type { ApiRequest, ApiResponse } from "../types";
+import { getCurrentWeekend } from "../../src/data/weekends/index.js";
+import { buildWeeklyDigestContent } from "../../src/newsletter/render.js";
+import { PostgresSubscriberStore, ResendWeeklyDigestTransport, requiredEnv } from "../../src/newsletter/server.js";
+import type { ApiRequest, ApiResponse } from "../types.js";
 
 export default async function handler(request: ApiRequest, response: ApiResponse) {
   if (!isAuthorized(request)) return response.status(401).end("Unauthorized.");

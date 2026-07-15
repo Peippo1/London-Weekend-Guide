@@ -1,5 +1,5 @@
-import type { WeekendGuide } from "../data/schema";
-import type { NewsletterSubscriber } from "./contracts";
+import type { WeekendGuide } from "../data/schema.js";
+import type { NewsletterSubscriber } from "./contracts.js";
 
 export interface WeeklyDigestContent {
   subject: string;

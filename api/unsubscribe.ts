@@ -1,5 +1,5 @@
-import { PostgresSubscriberStore } from "../src/newsletter/server";
-import type { ApiRequest, ApiResponse } from "./types";
+import { PostgresSubscriberStore } from "../src/newsletter/server.js";
+import type { ApiRequest, ApiResponse } from "./types.js";
 
 export default async function handler(request: ApiRequest, response: ApiResponse) {
   if (request.method !== "GET") return response.status(405).json({ message: "Method not allowed." });

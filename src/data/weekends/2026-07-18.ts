@@ -1,4 +1,4 @@
-import { validateWeekendGuide, type WeekendGuide } from "../schema";
+import { validateWeekendGuide, type WeekendGuide } from "../schema.js";
 
 const weekendGuide: WeekendGuide = {
   slug: "2026-07-18",
