@@ -8,7 +8,7 @@ const projectRoot = path.resolve(import.meta.dirname, "..");
 const nodeBinary =
   process.env.NODE_BINARY ??
   "/Users/tim/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node";
-const astroCli = path.join(projectRoot, "node_modules", "astro", "astro.js");
+const astroCli = path.join(projectRoot, "node_modules", "astro", "bin", "astro.mjs");
 
 function readDistFile(relativePath: string) {
   return fs.readFileSync(path.join(projectRoot, "dist", relativePath), "utf8");
